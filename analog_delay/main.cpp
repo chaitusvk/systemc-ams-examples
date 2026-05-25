@@ -2,34 +2,33 @@
 #include <systemc-ams>
 
 #include "square_wave.hpp"
-#include "jitter_delay.hpp"
-#include "thermo_ctrl.hpp"
-
+#include "variable_delay.hpp"
+#include "delay_control.hpp"
 
 SC_MODULE(tb)
 {
     sca_tdf::sca_signal<double> sig_in;
     sca_tdf::sca_signal<double> sig_out;
+    sca_tdf::sca_signal<double> delay_sig;
 
-    square_wave_gen        gen;
-    thermo_delay_jitter    dly;
-    thermo_ctrl            ctrl;
+    square_wave_gen gen;
+    variable_delay dly;
+    delay_control ctrl;
 
     SC_CTOR(tb)
     : gen("gen")
-    , dly("dly", 8)
+    , dly("dly")
     , ctrl("ctrl")
     {
         gen.out(sig_in);
 
-        dly.in_sig(sig_in);
-        dly.out_sig(sig_out);
+        ctrl.delay_out(delay_sig);
 
-        for(int i = 0; i < 8; i++)
-            dly.thermo[i](ctrl.ctrl[i]);
+        dly.in_sig(sig_in);
+        dly.delay_ctrl(delay_sig);
+        dly.out_sig(sig_out);
     }
 };
-
 
 int sc_main(int argc, char* argv[])
 {
@@ -38,12 +37,12 @@ int sc_main(int argc, char* argv[])
     tb t("t");
 
     sca_util::sca_trace_file* tf =
-        sca_util::sca_create_vcd_trace_file("thermo_delay");
+        sca_util::sca_create_vcd_trace_file("delay");
 
     sca_util::sca_trace(tf, t.sig_in,  "input");
-    sca_util::sca_trace(tf, t.sig_out, "output");
+    sca_util::sca_trace(tf, t.sig_out, "delayed");
 
-    sc_start(200, SC_PS);
+    sc_start(100, SC_PS);
 
     sca_util::sca_close_vcd_trace_file(tf);
 

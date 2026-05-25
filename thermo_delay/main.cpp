@@ -2,7 +2,7 @@
 #include <systemc-ams>
 
 #include "square_wave.hpp"
-#include "jitter_delay.hpp"
+#include "thermo_delay.hpp"
 #include "thermo_ctrl.hpp"
 
 
@@ -11,9 +11,9 @@ SC_MODULE(tb)
     sca_tdf::sca_signal<double> sig_in;
     sca_tdf::sca_signal<double> sig_out;
 
-    square_wave_gen        gen;
-    thermo_delay_jitter    dly;
-    thermo_ctrl            ctrl;
+    square_wave_gen gen;
+    thermo_delay    dly;
+    thermo_ctrl     ctrl;
 
     SC_CTOR(tb)
     : gen("gen")
