@@ -3,12 +3,19 @@
 
 #include "ams_ser.hpp"
 #include "prbs_7.hpp"
+#include "sink.hpp"
+
+using namespace sc_core;
 
 int sc_main(int argc, char* argv[])
 {
+    sc_core::sc_set_time_resolution(1, SC_FS);
+
     //--------------------------------
     // Parallel clock
     //--------------------------------
+
+
 
     sc_core::sc_clock clk_par(
         "clk_par",
@@ -34,6 +41,11 @@ int sc_main(int argc, char* argv[])
 
     serializer_32to1_ams ser("ser");
 
+    sink sink_mod("sink_mod");
+
+    
+
+
     //--------------------------------
     // Connections
     //--------------------------------
@@ -45,6 +57,8 @@ int sc_main(int argc, char* argv[])
     ser.din(prbs_bus);
 
     ser.tx(tx_sig);
+
+    sink_mod.rx(tx_sig);
 
     //--------------------------------
     // Trace
@@ -64,7 +78,7 @@ int sc_main(int argc, char* argv[])
     //--------------------------------
 
     sc_core::sc_start(
-        5,
+        15,
         sc_core::SC_NS);
 
     sca_util::sca_close_vcd_trace_file(tf);

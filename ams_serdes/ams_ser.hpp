@@ -79,7 +79,7 @@ SCA_TDF_MODULE(serializer_32to1_ams)
         // 1 ps timestep
         //--------------------------------
 
-        timestep = 1e-12;
+        timestep = 10e-15;
 
         set_timestep(
             sc_core::sc_time(

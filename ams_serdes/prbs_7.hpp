@@ -43,16 +43,18 @@ SC_MODULE(prbs7_gen_32)
     //--------------------------------
     void process()
     {
-        sc_dt::sc_uint<32> word = 0;
+        //sc_dt::sc_uint<32> word = 0;
+        sc_dt::sc_uint<32> word = 0x55555555;
+
 
         //--------------------------------
         // Generate 32 bits
         //--------------------------------
-        for(int i = 0; i < 32; i++)
-        {
-            word[i] =
-                next_prbs_bit();
-        }
+        // for(int i = 0; i < 32; i++)
+        // {
+        //     word[i] =
+        //         next_prbs_bit();
+        // }
 
         data_out.write(word);
     }
