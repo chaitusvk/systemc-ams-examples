@@ -78,7 +78,7 @@ int sc_main(int argc, char* argv[])
     //--------------------------------
 
     sc_core::sc_start(
-        15,
+        5,
         sc_core::SC_NS);
 
     sca_util::sca_close_vcd_trace_file(tf);
